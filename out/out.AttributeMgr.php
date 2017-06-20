@@ -32,12 +32,16 @@ if (!$user->isAdmin()) {
 }
 
 $attrdefs = $dms->getAllAttributeDefinitions();
+//var_dump($attrdefs);exit;
 
 if(isset($_GET['attrdefid']) && $_GET['attrdefid']) {
 	$selattrdef = $dms->getAttributeDefinition($_GET['attrdefid']);
 } else {
 	$selattrdef = null;
 }
+
+// all folders
+$folders = $dms->getFolders();
 
 $tmp = explode('.', basename($_SERVER['SCRIPT_FILENAME']));
 $view = UI::factory($theme, $tmp[1], array('dms'=>$dms, 'user'=>$user));
@@ -50,6 +54,7 @@ if($view) {
 	$view->setParam('maxRecursiveCount', $settings->_maxRecursiveCount);
 	$view->setParam('previewWidthList', $settings->_previewWidthList);
 	$view->setParam('timeout', $settings->_cmdTimeout);
+	$view->setParam('folders', $folders);
 	$view($_GET);
 }
 

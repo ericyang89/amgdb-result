@@ -41,6 +41,9 @@ if ($action == "addattrdef") {
 		UI::exitError(getMLText("admin_tools"),getMLText("invalid_request_token"));
 	}
 
+    // yulipu add: value is folderid
+    $usingfolder = intval($_POST["using_folder"]);
+    
 	$name = trim($_POST["name"]);
 	$type = intval($_POST["type"]);
 	$objtype = intval($_POST["objtype"]);
@@ -53,6 +56,9 @@ if ($action == "addattrdef") {
 	$valueset = trim($_POST["valueset"]);
 	$regex = trim($_POST["regex"]);
 
+    if(empty($usingfolder)) {
+        UI::exitError(getMLText("admin_tools"),getMLText("foldernotselect"));
+    }
 	if($name == '') {
 		UI::exitError(getMLText("admin_tools"),getMLText("attrdef_noname"));
 	}
@@ -69,7 +75,7 @@ if ($action == "addattrdef") {
 		UI::exitError(getMLText("admin_tools"),getMLText("attrdef_multiple_needs_valueset"));
 	}
 
-	$newAttrdef = $dms->addAttributeDefinition($name, $objtype, $type, $multiple, $minvalues, $maxvalues, $valueset, $regex);
+	$newAttrdef = $dms->addAttributeDefinition($name, $objtype, $type, $multiple, $minvalues, $maxvalues, $valueset, $regex, $usingfolder);
 	if (!$newAttrdef) {
 		UI::exitError(getMLText("admin_tools"),getMLText("error_occured"));
 	}
@@ -123,6 +129,9 @@ else if ($action == "editattrdef") {
 	if (!is_object($attrdef)) {
 		UI::exitError(getMLText("admin_tools"),getMLText("unknown_attrdef"));
 	}
+    
+    // yulipu add: value is folderid
+    $usingfolder = intval($_POST["using_folder"]);
 
 	$name = $_POST["name"];
 	$type = intval($_POST["type"]);
@@ -149,15 +158,17 @@ else if ($action == "editattrdef") {
 	if (!$attrdef->setName($name)) {
 		UI::exitError(getMLText("admin_tools"),getMLText("error_occured"));
 	}
-	if (!$attrdef->setType($type)) {
-		UI::exitError(getMLText("admin_tools"),getMLText("error_occured"));
-	}
-	if (!$attrdef->setObjType($objtype)) {
-		UI::exitError(getMLText("admin_tools"),getMLText("error_occured"));
-	}
-	if (!$attrdef->setMultipleValues($multiple)) {
-		UI::exitError(getMLText("admin_tools"),getMLText("error_occured"));
-	}
+    
+    // type, objtype, multi, reg 隐藏掉了 所以不用修改
+	//if (!$attrdef->setType($type)) {
+	//	UI::exitError(getMLText("admin_tools"),getMLText("error_occured"));
+	//}
+	//if (!$attrdef->setObjType($objtype)) {
+	//	UI::exitError(getMLText("admin_tools"),getMLText("error_occured"));
+	//}
+	//if (!$attrdef->setMultipleValues($multiple)) {
+	//	UI::exitError(getMLText("admin_tools"),getMLText("error_occured"));
+	//}
 	if (!$attrdef->setMinValues($minvalues)) {
 		UI::exitError(getMLText("admin_tools"),getMLText("error_occured"));
 	}
@@ -167,9 +178,12 @@ else if ($action == "editattrdef") {
 	if (!$attrdef->setValueSet($valueset)) {
 		UI::exitError(getMLText("admin_tools"),getMLText("error_occured"));
 	}
-	if (!$attrdef->setRegex($regex)) {
-		UI::exitError(getMLText("admin_tools"),getMLText("error_occured"));
-	}
+	//if (!$attrdef->setRegex($regex)) {
+	//	UI::exitError(getMLText("admin_tools"),getMLText("error_occured"));
+	//}
+    if (!$attrdef->setUsingFolder($usingfolder)) {
+        UI::exitError(getMLText("admin_tools"),getMLText("error_occured"));
+    }
 
 	$session->setSplashMsg(array('type'=>'success', 'msg'=>getMLText('splash_edit_attribute')));
 

@@ -14,7 +14,7 @@
 /**
  * @uses SeedDMS_SQLiteFTS_Document
  */
-require_once('Document.php');
+require_once('Document.php');  
 
 
 /**
@@ -121,7 +121,8 @@ class SeedDMS_SQLiteFTS_IndexedDocument extends SeedDMS_SQLiteFTS_Document {
 			'audio/mp3' => "id3 -l -R %s | egrep '(Title|Artist|Album)' | sed 's/^[^:]*: //g'",
 			'audio/mpeg' => "id3 -l -R %s | egrep '(Title|Artist|Album)' | sed 's/^[^:]*: //g'",
 			'text/plain' => 'cat %s',
-            'application/vnd.openxmlformats-officedocument.wordprocessingml.document' => ''
+            'application/vnd.openxmlformats-officedocument.wordprocessingml.document' => '',
+            'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet' => ''
 		);
 		if($convcmd) {
 			//$_convcmd = $convcmd;
@@ -182,10 +183,11 @@ class SeedDMS_SQLiteFTS_IndexedDocument extends SeedDMS_SQLiteFTS_Document {
                 // 2017-06-03 yulifu 修改
                 if('text/plain' === $mimetype) {
                     $handle = fopen($path, "r");
-                    $content = fread($handle, 3072);  // 3K
+                    $content = fread($handle, '8192');  // 8K
                     fclose($handle);
                     
                 } else if('application/msword' === $mimetype) {
+                    // windows
                     try {
                         $word = new COM('word.application');
                         $word->Visible = 0;
@@ -194,7 +196,7 @@ class SeedDMS_SQLiteFTS_IndexedDocument extends SeedDMS_SQLiteFTS_Document {
                         $word->Quit();
                         $word = null;
                         
-                        $content = mb_substr($content, 0, 200);
+                        $content = mb_substr($content, 0, 8192);
                         //file_put_contents('./../data/word.txt', $content);
                     
                     } catch(Exception $e) {
@@ -202,11 +204,9 @@ class SeedDMS_SQLiteFTS_IndexedDocument extends SeedDMS_SQLiteFTS_Document {
                     }
                 
                 } else if('application/vnd.openxmlformats-officedocument.wordprocessingml.document' === $mimetype) {
-                    
-                    try {
-                        // windows code
-                        include './../vendor/autoload.php';
-                    
+                    // word
+                    include './../vendor/autoload.php';
+                    try {                    
                         $writers = array(
                             'Word2007' => 'docx',
                             'ODText' => 'odt',
@@ -219,13 +219,55 @@ class SeedDMS_SQLiteFTS_IndexedDocument extends SeedDMS_SQLiteFTS_Document {
                         $content = $objWriter->getWriterPart('BODY')->write();
                         $content = strip_tags($content);
                         
-                        $content = mb_substr($content, 0, 200);
+                        $content = mb_substr($content, 0, 8192);
                         
                         //file_put_contents('./../data/word.txt', $content);
                         
                     } catch(Exception $e) {
                         file_put_contents('./../data/worderr.txt', $e->getMessage());
                     }
+                
+                } else if('application/vnd.ms-excel' === $mimetype) {
+                    
+                    try {
+                        require_once('PHPExcel/PHPExcel/Reader/Excel5.php');
+                        $objReader = new PHPExcel_Reader_Excel5;
+                        $objPHPExcel = $objReader->load($path);
+                        $sheet = $objPHPExcel->getSheet(0);
+                        $highestRow = $sheet->getHighestRow();
+                        $highestColumm = $sheet->getHighestColumn();
+                        for($row = 1; $row <= $highestRow; $row++){
+                            if($row > 100) break;
+                            
+                            $content .= $sheet->getCell('A'.$row)->getValue();
+                        }
+                        
+                    } catch(Exception $e) {
+                        file_put_contents('./../data/excelerr.txt', $e->getMessage());
+                    }
+
+                    //file_put_contents('./../data/excel03.txt', $content);
+                    
+                } else if('application/vnd.openxmlformats-officedocument.spreadsheetml.sheet' === $mimetype) {
+                    
+                    try {
+                        require_once('PHPExcel/PHPExcel/Reader/Excel2007.php');
+                        $objReader = new PHPExcel_Reader_Excel2007;
+                        $objPHPExcel = $objReader->load($path);
+                        $sheet = $objPHPExcel->getSheet(0);
+                        $highestRow = $sheet->getHighestRow();
+                        $highestColumm = $sheet->getHighestColumn();
+                        for($row = 1; $row <= $highestRow; $row++){
+                            if($row > 100) break;
+                            
+                            $content .= $sheet->getCell('A'.$row)->getValue();
+                        }
+                        
+                    } catch(Exception $e) {
+                        file_put_contents('./../data/excelerr.txt', $e->getMessage());
+                    }
+
+                    //file_put_contents('./../data/excel07.txt', $content);
                 }
                 
                 if($content) {

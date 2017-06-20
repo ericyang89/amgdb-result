@@ -39,16 +39,18 @@ DROP TABLE IF EXISTS `tblattributedefinitions`;
 CREATE TABLE `tblattributedefinitions` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `name` varchar(100) DEFAULT NULL,
-  `objtype` tinyint(4) NOT NULL DEFAULT '0',
-  `type` tinyint(4) NOT NULL DEFAULT '0',
+  `objtype` tinyint(4) NOT NULL DEFAULT '0' COMMENT '0all 1folder 2doc 3content',
+  `type` tinyint(4) NOT NULL DEFAULT '0' COMMENT '1int 2float 3string 4bool 5url 6email 7date',
   `multiple` tinyint(4) NOT NULL DEFAULT '0',
   `minvalues` int(11) NOT NULL DEFAULT '0',
   `maxvalues` int(11) NOT NULL DEFAULT '0',
   `valueset` text,
   `regex` text,
+  `usingfolder` int(11) DEFAULT '0' COMMENT '属性应用的文件夹',
   PRIMARY KEY (`id`),
   UNIQUE KEY `name` (`name`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8
+
 
 /*Data for the table `tblattributedefinitions` */
 

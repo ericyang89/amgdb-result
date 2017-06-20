@@ -1636,5 +1636,7 @@ URL: [url]',
 'yes' => 'Yes',
 'zh_CN' => 'Chinese (CN)',
 'zh_TW' => 'Chinese (TW)',
+'using_folder' => '应用的文件夹',
+'foldernotselect' => '没有选择文件夹'
 );
 ?>

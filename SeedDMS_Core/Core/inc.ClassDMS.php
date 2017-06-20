@@ -1626,7 +1626,17 @@ class SeedDMS_Core_DMS {
 
 		$resArr = $resArr[0];
 
-		$attrdef = new SeedDMS_Core_AttributeDefinition($resArr["id"], $resArr["name"], $resArr["objtype"], $resArr["type"], $resArr["multiple"], $resArr["minvalues"], $resArr["maxvalues"], $resArr["valueset"], $resArr["regex"]);
+		$attrdef = new SeedDMS_Core_AttributeDefinition(
+            $resArr["id"],
+            $resArr["name"],
+            $resArr["objtype"],
+            $resArr["type"],
+            $resArr["multiple"],
+            $resArr["minvalues"],
+            $resArr["maxvalues"],
+            $resArr["valueset"],
+            $resArr["regex"],
+            $resArr["usingfolder"]);
 		$attrdef->setDMS($this);
 		return $attrdef;
 	} /* }}} */
@@ -1650,7 +1660,17 @@ class SeedDMS_Core_DMS {
 
 		$resArr = $resArr[0];
 
-		$attrdef = new SeedDMS_Core_AttributeDefinition($resArr["id"], $resArr["name"], $resArr["objtype"], $resArr["type"], $resArr["multiple"], $resArr["minvalues"], $resArr["maxvalues"], $resArr["valueset"], $resArr["regex"]);
+		$attrdef = new SeedDMS_Core_AttributeDefinition(
+            $resArr["id"],
+            $resArr["name"],
+            $resArr["objtype"],
+            $resArr["type"],
+            $resArr["multiple"],
+            $resArr["minvalues"],
+            $resArr["maxvalues"],
+            $resArr["valueset"],
+            $resArr["regex"],
+            $resArr["usingfolder"]);
 		$attrdef->setDMS($this);
 		return $attrdef;
 	} /* }}} */
@@ -1659,15 +1679,21 @@ class SeedDMS_Core_DMS {
 	 * Return list of all attributes definitions
 	 *
 	 * @param integer $objtype select those attributes defined for an object type
+	 * @param integer $usingfolderid 属性是否在这个文件夹上应用了
 	 * @return array of instances of {@link SeedDMS_Core_AttributeDefinition} or false
 	 */
-	function getAllAttributeDefinitions($objtype=0) { /* {{{ */
+	function getAllAttributeDefinitions($objtype=0, $usingfolderid = 0) { /* {{{ */
 		$queryStr = "SELECT * FROM `tblAttributeDefinitions`";
 		if($objtype) {
 			if(is_array($objtype))
 				$queryStr .= ' WHERE `objtype` in (\''.implode("','", $objtype).'\')';
 			else
 				$queryStr .= ' WHERE `objtype`='.intval($objtype);
+            
+            
+            if(0 !== $usingfolderid) {
+                $queryStr .= ' AND `usingfolder`='.intval($usingfolderid);
+            }
 		}
 		$queryStr .= ' ORDER BY `name`';
 		$resArr = $this->db->getResultArray($queryStr);
@@ -1678,7 +1704,17 @@ class SeedDMS_Core_DMS {
 		$attrdefs = array();
 
 		for ($i = 0; $i < count($resArr); $i++) {
-			$attrdef = new SeedDMS_Core_AttributeDefinition($resArr[$i]["id"], $resArr[$i]["name"], $resArr[$i]["objtype"], $resArr[$i]["type"], $resArr[$i]["multiple"], $resArr[$i]["minvalues"], $resArr[$i]["maxvalues"], $resArr[$i]["valueset"], $resArr[$i]["regex"]);
+			$attrdef = new SeedDMS_Core_AttributeDefinition(
+                $resArr[$i]["id"],
+                $resArr[$i]["name"],
+                $resArr[$i]["objtype"],
+                $resArr[$i]["type"],
+                $resArr[$i]["multiple"],
+                $resArr[$i]["minvalues"],
+                $resArr[$i]["maxvalues"],
+                $resArr[$i]["valueset"],
+                $resArr[$i]["regex"],
+                $resArr[$i]["usingfolder"]);
 			$attrdef->setDMS($this);
 			$attrdefs[$i] = $attrdef;
 		}
@@ -1695,9 +1731,10 @@ class SeedDMS_Core_DMS {
 	 * @param integer $minvalues minimum number of values
 	 * @param integer $maxvalues maximum number of values if multiple is set
 	 * @param string $valueset list of allowed values (csv format)
+	 * @param string $usingfolder which dir use this prop
 	 * @return object of {@link SeedDMS_Core_User}
 	 */
-	function addAttributeDefinition($name, $objtype, $type, $multiple=0, $minvalues=0, $maxvalues=1, $valueset='', $regex='') { /* {{{ */
+	function addAttributeDefinition($name, $objtype, $type, $multiple=0, $minvalues=0, $maxvalues=1, $valueset='', $regex='', $usingfolder) { /* {{{ */
 		if (is_object($this->getAttributeDefinitionByName($name))) {
 			return false;
 		}
@@ -1709,7 +1746,18 @@ class SeedDMS_Core_DMS {
 		} else {
 			$valueset = '';
 		}
-		$queryStr = "INSERT INTO `tblAttributeDefinitions` (`name`, `objtype`, `type`, `multiple`, `minvalues`, `maxvalues`, `valueset`, `regex`) VALUES (".$this->db->qstr($name).", ".intval($objtype).", ".intval($type).", ".intval($multiple).", ".intval($minvalues).", ".intval($maxvalues).", ".$this->db->qstr($valueset).", ".$this->db->qstr($regex).")";
+		$queryStr = "INSERT INTO `tblAttributeDefinitions` (`name`, `objtype`, `type`, `multiple`, `minvalues`, `maxvalues`, `valueset`, `regex`, `usingfolder`)"
+            ." VALUES ("
+                .$this->db->qstr($name)
+                .", ".intval($objtype)
+                .", ".intval($type)
+                .", ".intval($multiple)
+                .", ".intval($minvalues)
+                .", ".intval($maxvalues)
+                .", ".$this->db->qstr($valueset)
+                .", ".$this->db->qstr($regex)
+                .", ".$this->db->qstr($usingfolder)
+                .")";
 		$res = $this->db->getResult($queryStr);
 		if (!$res)
 			return false;
@@ -2293,5 +2341,17 @@ class SeedDMS_Core_DMS {
 		return true;
 	} /* }}} */
 
+    /**
+     * 获取所有文件夹
+     *
+     * @param $limit
+     * @return
+     */
+    function getFolders($limit = 1000) {
+        $query = "SELECT id,name,parent FROM tblfolders limit 0, {$limit}";
+        $records = $this->db->getResultArray($query);
+        
+        return $records;
+    }
 }
 ?>

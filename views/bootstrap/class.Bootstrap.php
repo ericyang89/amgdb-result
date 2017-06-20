@@ -1759,6 +1759,14 @@ $(function() {
 		return '';
 	} /* }}} */
 
+    function printRenderSelectFoldersJs() {
+        echo <<<STR
+function renderUsingFolderSelect() {
+    $("#using_folder").select2();
+}
+STR;
+    }
+    
 	/**
 	 * Output left-arrow with link which takes over a number of ids into
 	 * a select box.

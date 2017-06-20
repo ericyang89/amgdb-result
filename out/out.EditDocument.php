@@ -49,7 +49,14 @@ if($document->isLocked()) {
 }
 
 $folder = $document->getFolder();
-$attrdefs = $dms->getAllAttributeDefinitions(array(SeedDMS_Core_AttributeDefinition::objtype_document, SeedDMS_Core_AttributeDefinition::objtype_all));
+
+// yulipu add
+$docFolderId = $folder->getID();
+
+$attrdefs = $dms->getAllAttributeDefinitions(
+    array(SeedDMS_Core_AttributeDefinition::objtype_document,
+        SeedDMS_Core_AttributeDefinition::objtype_all),
+    $docFolderId);
 
 /* Create object for checking access to certain operations */
 $accessop = new SeedDMS_AccessOperation($dms, $document, $user, $settings);

@@ -14,4 +14,15 @@ pear 包 （命令安装）
     extension=php_pdo_sqlite.dll
     extension=php_com_dotnet.dll
     extension=php_mbstring.dll
+    
+    
+excel 支持
+赋值 pear 目录下的 PHPExcel 到 php 的 pear 目录即可    
+    
+;***** Added by go-pear
+include_path=".;D:\AppServ\php5\pear"
+;*****
+
+
+2017-06-20 增加属性功能 修改数据库
 

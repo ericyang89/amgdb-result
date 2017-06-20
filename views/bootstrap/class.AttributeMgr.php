@@ -47,12 +47,16 @@ $(document).ready( function() {
 //		ev.preventDefault();
 	});
 	$( "#selector" ).change(function() {
-		$('div.ajax').trigger('update', {attrdefid: $(this).val()});
+		$('div.ajax').trigger('update', {attrdefid: $(this).val(), callback: function(){
+            renderUsingFolderSelect();
+        }});
 	});
 });
 <?php
 		$this->printDeleteFolderButtonJs();
 		$this->printDeleteDocumentButtonJs();
+        // yulipu 输出选择文件夹 js
+		$this->printRenderSelectFoldersJs();
 	} /* }}} */
 
 	function info() { /* {{{ */
@@ -89,12 +93,12 @@ $(document).ready( function() {
 							}
 							$content .= "<td>";
 							/* Check if value is in value set */
-							if($selattrdef->getValueSet()) {
-								foreach($values as $v) {
-									if(!in_array($value, $selattrdef->getValueSetAsArray()))
-										$content .= getMLText("attribute_value_not_in_valueset");
-								}
-							}
+							//if($selattrdef->getValueSet()) {
+								//foreach($values as $v) {
+								//	if(!in_array($value, $selattrdef->getValueSetAsArray()))
+								//		$content .= getMLText("attribute_value_not_in_valueset");
+								//}
+							//}
 							$content .= "</td>";
 							$content .= "</tr>";
 						}
@@ -169,7 +173,9 @@ $(document).ready( function() {
 <?php
 		}
 ?>
-					<div class="control-group">
+					
+                    
+                    <div class="control-group">
 						<label class="control-label">
 								<?php printMLText("attrdef_name");?>:
 						</label>
@@ -177,27 +183,54 @@ $(document).ready( function() {
 							<input type="text" name="name" value="<?php echo $attrdef ? htmlspecialchars($attrdef->getName()) : '' ?>">
 						</div>
 					</div>
+                    
+                    <div class="control-group">
+						<label class="control-label">
+								<?php printMLText("using_folder");?>:
+						</label>
+						<div class="controls">
+							<select name="using_folder" id="using_folder">
+                                <?php $dbUsingFolderId = $attrdef ? $attrdef->getUsingFolder() : 0; ?>
+                                <?php foreach($this->params['folders'] as $val){ ?>
+                                <option <?php if($dbUsingFolderId == $val['id']){echo 'selected="selected"';} ?> value="<?php echo $val['id']; ?>"><?php echo $val['name']; ?></option>
+                                <?php } ?>
+                            </select>
+						</div>
+					</div>
 
 
-
-					<div class="control-group">
+					<div class="control-group" style="display:none">
 						<label class="control-label">
 							<?php printMLText("attrdef_objtype");?>:
 						</label>
 						<div class="controls">
-						<select name="objtype"><option value="<?php echo SeedDMS_Core_AttributeDefinition::objtype_all ?>"><?php printMLText('all'); ?></option><option value="<?php echo SeedDMS_Core_AttributeDefinition::objtype_folder ?>" <?php if($attrdef && $attrdef->getObjType() == SeedDMS_Core_AttributeDefinition::objtype_folder) echo "selected"; ?>><?php printMLText('folder'); ?></option><option value="<?php echo SeedDMS_Core_AttributeDefinition::objtype_document ?>" <?php if($attrdef && $attrdef->getObjType() == SeedDMS_Core_AttributeDefinition::objtype_document) echo "selected"; ?>><?php printMLText('document'); ?></option><option value="<?php echo SeedDMS_Core_AttributeDefinition::objtype_documentcontent ?>" <?php if($attrdef && $attrdef->getObjType() == SeedDMS_Core_AttributeDefinition::objtype_documentcontent) echo "selected"; ?>><?php printMLText('documentcontent'); ?></option></select>
+                            <select name="objtype">
+                                <option value="<?php echo SeedDMS_Core_AttributeDefinition::objtype_document ?>" <?php if($attrdef && $attrdef->getObjType() == SeedDMS_Core_AttributeDefinition::objtype_document) echo "selected"; ?>><?php printMLText('document'); ?></option>
+                                <option value="<?php echo SeedDMS_Core_AttributeDefinition::objtype_all ?>"><?php printMLText('all'); ?></option>
+                                <option value="<?php echo SeedDMS_Core_AttributeDefinition::objtype_folder ?>" <?php if($attrdef && $attrdef->getObjType() == SeedDMS_Core_AttributeDefinition::objtype_folder) echo "selected"; ?>><?php printMLText('folder'); ?></option>
+                                <option value="<?php echo SeedDMS_Core_AttributeDefinition::objtype_documentcontent ?>" <?php if($attrdef && $attrdef->getObjType() == SeedDMS_Core_AttributeDefinition::objtype_documentcontent) echo "selected"; ?>><?php printMLText('documentcontent'); ?></option>
+                            </select>
 						</div>
 					</div>
 
 
-					<div class="control-group">
+					<div class="control-group" style="display:none">
 						<label class="control-label"><?php printMLText("attrdef_type");?>:</label>
 						<div class="controls">
-							<select name="type"><option value="<?php echo SeedDMS_Core_AttributeDefinition::type_int ?>" <?php if($attrdef && $attrdef->getType() == SeedDMS_Core_AttributeDefinition::type_int) echo "selected"; ?>><?php printMLText('attrdef_type_int'); ?></option><option value="<?php echo SeedDMS_Core_AttributeDefinition::type_float ?>" <?php if($attrdef && $attrdef->getType() == SeedDMS_Core_AttributeDefinition::type_float) echo "selected"; ?>><?php printMLText('attrdef_type_float'); ?></option><option value="<?php echo SeedDMS_Core_AttributeDefinition::type_string ?>" <?php if($attrdef && $attrdef->getType() == SeedDMS_Core_AttributeDefinition::type_string) echo "selected"; ?>><?php printMLText('attrdef_type_string'); ?></option><option value="<?php echo SeedDMS_Core_AttributeDefinition::type_boolean ?>" <?php if($attrdef && $attrdef->getType() == SeedDMS_Core_AttributeDefinition::type_boolean) echo "selected"; ?>><?php printMLText('attrdef_type_boolean'); ?></option><option value="<?php echo SeedDMS_Core_AttributeDefinition::type_date ?>" <?php if($attrdef && $attrdef->getType() == SeedDMS_Core_AttributeDefinition::type_date) echo "selected"; ?>><?php printMLText('attrdef_type_date'); ?></option><option value="<?php echo SeedDMS_Core_AttributeDefinition::type_email ?>" <?php if($attrdef && $attrdef->getType() == SeedDMS_Core_AttributeDefinition::type_email) echo "selected"; ?>><?php printMLText('attrdef_type_email'); ?></option><option value="<?php echo SeedDMS_Core_AttributeDefinition::type_url ?>" <?php if($attrdef && $attrdef->getType() == SeedDMS_Core_AttributeDefinition::type_url) echo "selected"; ?>><?php printMLText('attrdef_type_url'); ?></option></select>
+							<select name="type">
+                                <option value="<?php echo SeedDMS_Core_AttributeDefinition::type_string ?>" <?php if($attrdef && $attrdef->getType() == SeedDMS_Core_AttributeDefinition::type_string) echo "selected"; ?>><?php printMLText('attrdef_type_string'); ?></option>
+                                <option value="<?php echo SeedDMS_Core_AttributeDefinition::type_int ?>" <?php if($attrdef && $attrdef->getType() == SeedDMS_Core_AttributeDefinition::type_int) echo "selected"; ?>><?php printMLText('attrdef_type_int'); ?></option>
+                                <option value="<?php echo SeedDMS_Core_AttributeDefinition::type_float ?>" <?php if($attrdef && $attrdef->getType() == SeedDMS_Core_AttributeDefinition::type_float) echo "selected"; ?>><?php printMLText('attrdef_type_float'); ?></option>
+                                <option value="<?php echo SeedDMS_Core_AttributeDefinition::type_boolean ?>" <?php if($attrdef && $attrdef->getType() == SeedDMS_Core_AttributeDefinition::type_boolean) echo "selected"; ?>><?php printMLText('attrdef_type_boolean'); ?></option>
+                                <option value="<?php echo SeedDMS_Core_AttributeDefinition::type_date ?>" <?php if($attrdef && $attrdef->getType() == SeedDMS_Core_AttributeDefinition::type_date) echo "selected"; ?>><?php printMLText('attrdef_type_date'); ?></option>
+                                <option value="<?php echo SeedDMS_Core_AttributeDefinition::type_email ?>" <?php if($attrdef && $attrdef->getType() == SeedDMS_Core_AttributeDefinition::type_email) echo "selected"; ?>><?php printMLText('attrdef_type_email'); ?></option>
+                                <option value="<?php echo SeedDMS_Core_AttributeDefinition::type_url ?>" <?php if($attrdef && $attrdef->getType() == SeedDMS_Core_AttributeDefinition::type_url) echo "selected"; ?>><?php printMLText('attrdef_type_url'); ?></option>
+                            </select>
 						</div>
 					</div>
+                    
 
-					<div class="control-group">
+					<div class="control-group" style="display: none">
 						<label class="control-label">
 							<?php printMLText("attrdef_multiple");?>:
 						</label>
@@ -240,7 +273,7 @@ $(document).ready( function() {
 					</div>
 
 					
-					<div class="control-group">
+					<div class="control-group" style="display:none">
 						<label class="control-label">
 							<?php printMLText("attrdef_regex");?>:
 						</label>

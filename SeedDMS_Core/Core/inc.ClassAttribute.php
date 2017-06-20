@@ -357,6 +357,8 @@ class SeedDMS_Core_AttributeDefinition { /* {{{ */
 	 * @access protected
 	 */
 	protected $_regex;
+    
+    protected $_usingfolder;
 
 	/**
 	 * @var integer validation error
@@ -405,7 +407,7 @@ class SeedDMS_Core_AttributeDefinition { /* {{{ */
 	 * @param string $valueset separated list of allowed values, the first char
 	 *        is taken as the separator
 	 */
-	function __construct($id, $name, $objtype, $type, $multiple, $minvalues, $maxvalues, $valueset, $regex) { /* {{{ */
+	function __construct($id, $name, $objtype, $type, $multiple, $minvalues, $maxvalues, $valueset, $regex, $usingfolder = 0) { /* {{{ */
 		$this->_id = $id;
 		$this->_name = $name;
 		$this->_type = $type;
@@ -416,6 +418,7 @@ class SeedDMS_Core_AttributeDefinition { /* {{{ */
 		$this->_valueset = $valueset;
 		$this->_separator = '';
 		$this->_regex = $regex;
+        $this->_usingfolder = $usingfolder;
 		$this->_dms = null;
 		$this->_validation_error = 0;
 	} /* }}} */
@@ -689,7 +692,7 @@ class SeedDMS_Core_AttributeDefinition { /* {{{ */
 	function getRegex() { /* {{{ */
 		return $this->_regex;
 	} /* }}} */
-
+    
 	/**
 	 * Set the regular expression
 	 *
@@ -709,6 +712,25 @@ class SeedDMS_Core_AttributeDefinition { /* {{{ */
 		$this->_regex = $regex;
 		return true;
 	} /* }}} */
+    
+    function getUsingFolder() {
+		return $this->_usingfolder;
+	}
+    
+    /**
+     * 设置属性应用的文件夹
+     */
+    function setUsingFolder($usingfolder) {
+		$db = $this->_dms->getDB();
+
+		$queryStr = "UPDATE `tblAttributeDefinitions` SET `usingfolder` =".$db->qstr($usingfolder)." WHERE `id` = " . $this->_id;
+		$res = $db->getResult($queryStr);
+		if (!$res)
+			return false;
+
+		$this->_usingfolder = $usingfolder;
+		return true;
+	}
 
 	/**
 	 * Check if the attribute definition is used
