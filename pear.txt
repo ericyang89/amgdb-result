@@ -23,6 +23,3 @@ excel 支持
 include_path=".;D:\AppServ\php5\pear"
 ;*****
 
-
-2017-06-20 增加属性功能 修改数据库
-

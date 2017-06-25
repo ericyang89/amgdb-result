@@ -50,7 +50,7 @@ if($document->isLocked()) {
 
 $folder = $document->getFolder();
 
-// yulipu add
+// yulipu add 文档所在的文件夹 id
 $docFolderId = $folder->getID();
 
 $attrdefs = $dms->getAllAttributeDefinitions(

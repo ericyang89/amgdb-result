@@ -1679,10 +1679,10 @@ class SeedDMS_Core_DMS {
 	 * Return list of all attributes definitions
 	 *
 	 * @param integer $objtype select those attributes defined for an object type
-	 * @param integer $usingfolderid 属性是否在这个文件夹上应用了
+	 * @param integer $folderid 属性是否在这个文件夹上应用了
 	 * @return array of instances of {@link SeedDMS_Core_AttributeDefinition} or false
 	 */
-	function getAllAttributeDefinitions($objtype=0, $usingfolderid = 0) { /* {{{ */
+	function getAllAttributeDefinitions($objtype=0, $folderid = 0) { /* {{{ */
 		$queryStr = "SELECT * FROM `tblAttributeDefinitions`";
 		if($objtype) {
 			if(is_array($objtype))
@@ -1690,9 +1690,12 @@ class SeedDMS_Core_DMS {
 			else
 				$queryStr .= ' WHERE `objtype`='.intval($objtype);
             
-            
-            if(0 !== $usingfolderid) {
-                $queryStr .= ' AND `usingfolder`='.intval($usingfolderid);
+            // 对于文档属性 -> 若文件夹定义了属性 其下的所有字文件夹下的文档也应该有此属性
+            if(0 !== $folderid) {
+                // 父文件夹
+                $parentSql = 'SELECT folderList FROM tblfolders where id=' . $folderid;
+                
+                $queryStr .= ' AND `usingfolder`='.intval($folderid);
             }
 		}
 		$queryStr .= ' ORDER BY `name`';
