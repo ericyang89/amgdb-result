@@ -1442,6 +1442,7 @@ URL: [url]',
 'zh_CN' => '中文简体',
 'zh_TW' => '中文繁体',
 'using_folder' => '应用的文件夹',
-'foldernotselect' => '没有选择文件夹'
+'foldernotselect' => '没有选择文件夹',
+'jingsearch' => '井搜索'
 );
 ?>

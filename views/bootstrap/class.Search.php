@@ -118,258 +118,262 @@ class SeedDMS_View_Search extends SeedDMS_Bootstrap_Style {
 <?php
 		}
 ?>
+
+        <li class="">
+            <a data-target="#jing" data-toggle="tab"><?php printMLText('jingsearch'); ?></a>
+        </li>
 	</ul>
 	<div class="tab-content">
 	  <div class="tab-pane <?php echo ($fullsearch == false) ? 'active' : ''; ?>" id="database">
-<form action="../out/out.Search.php" name="form1">
-<?php
-// Database search Form {{{
-		$this->contentContainerStart();
-?>
-<table class="table-condensed">
-<tr>
-<td><?php printMLText("search_query");?>:</td>
-<td>
-<input type="text" name="query" value="<?php echo htmlspecialchars($this->query); ?>" />
-<select name="mode">
-<option value="1" <?php echo ($mode=='AND') ? "selected" : ""; ?>><?php printMLText("search_mode_and");?>
-<option value="0"<?php echo ($mode=='OR') ? "selected" : ""; ?>><?php printMLText("search_mode_or");?>
-</select>
-</td>
-</tr>
-<tr>
-<td><?php printMLText("search_in");?>:</td>
-<td>
-<label class="checkbox" for="keywords"><input type="checkbox" id="keywords" name="searchin[]" value="1" <?php if(in_array('1', $searchin)) echo " checked"; ?>><?php printMLText("keywords");?> (<?php printMLText('documents_only'); ?>)</label>
-<label class="checkbox" for="searchName"><input type="checkbox" name="searchin[]" id="searchName" value="2" <?php if(in_array('2', $searchin)) echo " checked"; ?>><?php printMLText("name");?></label>
-<label class="checkbox" for="comment"><input type="checkbox" name="searchin[]" id="comment" value="3" <?php if(in_array('3', $searchin)) echo " checked"; ?>><?php printMLText("comment");?></label>
-<label class="checkbox" for="attributes"><input type="checkbox" name="searchin[]" id="attributes" value="4" <?php if(in_array('4', $searchin)) echo " checked"; ?>><?php printMLText("attributes");?></label>
-<label class="checkbox" for="id"><input type="checkbox" name="searchin[]" id="id" value="5" <?php if(in_array('5', $searchin)) echo " checked"; ?>><?php printMLText("id");?></label>
-</td>
-</tr>
-<tr>
-<td><?php printMLText("owner");?>:</td>
-<td>
-<select class="chzn-select-deselect" name="ownerid" data-placeholder="<?php printMLText('select_users'); ?>" data-no_results_text="<?php printMLText('unknown_owner'); ?>">
-<option value="-1"></option>
-<?php
-		foreach ($allUsers as $userObj) {
-			if ($userObj->isGuest() || ($userObj->isHidden() && $userObj->getID() != $user->getID() && !$user->isAdmin()))
-				continue;
-			print "<option value=\"".$userObj->getID()."\" ".(($owner && $userObj->getID() == $owner->getID()) ? "selected" : "").">" . htmlspecialchars($userObj->getLogin()." - ".$userObj->getFullName()) . "</option>\n";
-		}
-?>
-</select>
-</td>
-</tr>
-<tr>
-<td><?php printMLText("search_resultmode");?>:</td>
-<td>
-<select name="resultmode">
-<option value="3" <?php echo ($resultmode=='3') ? "selected" : ""; ?>><?php printMLText("search_resultmode_both");?>
-<option value="2"<?php echo ($resultmode=='2') ? "selected" : ""; ?>><?php printMLText("search_mode_folders");?>
-<option value="1"<?php echo ($resultmode=='1') ? "selected" : ""; ?>><?php printMLText("search_mode_documents");?>
-</select>
-</td>
-</tr>
-<tr>
-<td><?php printMLText("under_folder")?>:</td>
-<td><?php $this->printFolderChooserHtml("form1", M_READ, -1, $startfolder);?></td>
-</tr>
-<tr>
-<td><?php printMLText("creation_date");?>:</td>
-<td>
-        <label class="checkbox inline">
-				  <input type="checkbox" name="creationdate" value="true" <?php if($creationdate) echo "checked"; ?>/><?php printMLText("between");?>
-        </label><br />
-        <span class="input-append date" style="display: inline;" id="createstartdate" data-date="<?php echo date('Y-m-d'); ?>" data-date-format="yyyy-mm-dd" data-date-language="<?php echo str_replace('_', '-', $this->params['session']->getLanguage()); ?>">
-          <input class="span4" size="16" name="createstart" type="text" value="<?php if($startdate) printf("%04d-%02d-%02d", $startdate['year'], $startdate['month'], $startdate['day']); else echo date('Y-m-d'); ?>">
-          <span class="add-on"><i class="icon-calendar"></i></span>
-        </span>&nbsp;
-				<?php printMLText("and"); ?>
-        <span class="input-append date" style="display: inline;" id="createenddate" data-date="<?php echo date('Y-m-d'); ?>" data-date-format="yyyy-mm-dd" data-date-language="<?php echo str_replace('_', '-', $this->params['session']->getLanguage()); ?>">
-          <input class="span4" size="16" name="createend" type="text" value="<?php if($stopdate) printf("%04d-%02d-%02d", $stopdate['year'], $stopdate['month'], $stopdate['day']); else echo date('Y-m-d'); ?>">
-          <span class="add-on"><i class="icon-calendar"></i></span>
-        </span>
-</td>
-</tr>
+            <form action="../out/out.Search.php" name="form1">
+                <?php
+                // Database search Form {{{
+                        $this->contentContainerStart();
+                ?>
+                <table class="table-condensed">
+                <tr>
+                    <td><?php printMLText("search_query");?>:</td>
+                    <td>
+                    <input type="text" name="query" value="<?php echo htmlspecialchars($this->query); ?>" />
+                    <select name="mode">
+                    <option value="1" <?php echo ($mode=='AND') ? "selected" : ""; ?>><?php printMLText("search_mode_and");?>
+                    <option value="0"<?php echo ($mode=='OR') ? "selected" : ""; ?>><?php printMLText("search_mode_or");?>
+                    </select>
+                    </td>
+                </tr>
+                <tr>
+                    <td><?php printMLText("search_in");?>:</td>
+                    <td>
+                    <label class="checkbox" for="keywords"><input type="checkbox" id="keywords" name="searchin[]" value="1" <?php if(in_array('1', $searchin)) echo " checked"; ?>><?php printMLText("keywords");?> (<?php printMLText('documents_only'); ?>)</label>
+                    <label class="checkbox" for="searchName"><input type="checkbox" name="searchin[]" id="searchName" value="2" <?php if(in_array('2', $searchin)) echo " checked"; ?>><?php printMLText("name");?></label>
+                    <label class="checkbox" for="comment"><input type="checkbox" name="searchin[]" id="comment" value="3" <?php if(in_array('3', $searchin)) echo " checked"; ?>><?php printMLText("comment");?></label>
+                    <label class="checkbox" for="attributes"><input type="checkbox" name="searchin[]" id="attributes" value="4" <?php if(in_array('4', $searchin)) echo " checked"; ?>><?php printMLText("attributes");?></label>
+                    <label class="checkbox" for="id"><input type="checkbox" name="searchin[]" id="id" value="5" <?php if(in_array('5', $searchin)) echo " checked"; ?>><?php printMLText("id");?></label>
+                    </td>
+                </tr>
+                <tr>
+                    <td><?php printMLText("owner");?>:</td>
+                    <td>
+                    <select class="chzn-select-deselect" name="ownerid" data-placeholder="<?php printMLText('select_users'); ?>" data-no_results_text="<?php printMLText('unknown_owner'); ?>">
+                    <option value="-1"></option>
+                    <?php
+                            foreach ($allUsers as $userObj) {
+                                if ($userObj->isGuest() || ($userObj->isHidden() && $userObj->getID() != $user->getID() && !$user->isAdmin()))
+                                    continue;
+                                print "<option value=\"".$userObj->getID()."\" ".(($owner && $userObj->getID() == $owner->getID()) ? "selected" : "").">" . htmlspecialchars($userObj->getLogin()." - ".$userObj->getFullName()) . "</option>\n";
+                            }
+                    ?>
+                    </select>
+                    </td>
+                </tr>
+                <tr>
+                    <td><?php printMLText("search_resultmode");?>:</td>
+                    <td>
+                    <select name="resultmode">
+                    <option value="3" <?php echo ($resultmode=='3') ? "selected" : ""; ?>><?php printMLText("search_resultmode_both");?>
+                    <option value="2"<?php echo ($resultmode=='2') ? "selected" : ""; ?>><?php printMLText("search_mode_folders");?>
+                    <option value="1"<?php echo ($resultmode=='1') ? "selected" : ""; ?>><?php printMLText("search_mode_documents");?>
+                    </select>
+                    </td>
+                </tr>
+                <tr>
+                    <td><?php printMLText("under_folder")?>:</td>
+                    <td><?php $this->printFolderChooserHtml("form1", M_READ, -1, $startfolder);?></td>
+                </tr>
+                <tr>
+                    <td><?php printMLText("creation_date");?>:</td>
+                    <td>
+                            <label class="checkbox inline">
+                                      <input type="checkbox" name="creationdate" value="true" <?php if($creationdate) echo "checked"; ?>/><?php printMLText("between");?>
+                            </label><br />
+                            <span class="input-append date" style="display: inline;" id="createstartdate" data-date="<?php echo date('Y-m-d'); ?>" data-date-format="yyyy-mm-dd" data-date-language="<?php echo str_replace('_', '-', $this->params['session']->getLanguage()); ?>">
+                              <input class="span4" size="16" name="createstart" type="text" value="<?php if($startdate) printf("%04d-%02d-%02d", $startdate['year'], $startdate['month'], $startdate['day']); else echo date('Y-m-d'); ?>">
+                              <span class="add-on"><i class="icon-calendar"></i></span>
+                            </span>&nbsp;
+                                    <?php printMLText("and"); ?>
+                            <span class="input-append date" style="display: inline;" id="createenddate" data-date="<?php echo date('Y-m-d'); ?>" data-date-format="yyyy-mm-dd" data-date-language="<?php echo str_replace('_', '-', $this->params['session']->getLanguage()); ?>">
+                              <input class="span4" size="16" name="createend" type="text" value="<?php if($stopdate) printf("%04d-%02d-%02d", $stopdate['year'], $stopdate['month'], $stopdate['day']); else echo date('Y-m-d'); ?>">
+                              <span class="add-on"><i class="icon-calendar"></i></span>
+                            </span>
+                    </td>
+                </tr>
+                <?php
+                        if($attrdefs) {
+                            foreach($attrdefs as $attrdef) {
+                                $attricon = '';
+                                if($attrdef->getObjType() == SeedDMS_Core_AttributeDefinition::objtype_all) {
+                ?>
+                <tr>
+                    <td><?php echo htmlspecialchars($attrdef->getName()); ?>:</td>
+                    <td><?php $this->printAttributeEditField($attrdef, isset($attributes[$attrdef->getID()]) ? $attributes[$attrdef->getID()] : '', 'attributes', true) ?></td>
+                </tr>
+                <?php
+                                }
+                            }
+                        }
+                ?>
 
-<?php
-		if($attrdefs) {
-			foreach($attrdefs as $attrdef) {
-				$attricon = '';
-				if($attrdef->getObjType() == SeedDMS_Core_AttributeDefinition::objtype_all) {
-?>
-<tr>
-	<td><?php echo htmlspecialchars($attrdef->getName()); ?>:</td>
-	<td><?php $this->printAttributeEditField($attrdef, isset($attributes[$attrdef->getID()]) ? $attributes[$attrdef->getID()] : '', 'attributes', true) ?></td>
-</tr>
+                <tr>
+                <td></td><td><button type="submit" class="btn"><i class="icon-search"></i> <?php printMLText("search"); ?></button></td>
+                </tr>
 
-<?php
-				}
-			}
-		}
-?>
+                </table>
+                <?php
+                        $this->contentContainerEnd();
+                // }}}
 
-<tr>
-<td></td><td><button type="submit" class="btn"><i class="icon-search"></i> <?php printMLText("search"); ?></button></td>
-</tr>
+                        /* First check if any of the folder filters are set. If it is,
+                         * open the accordion.
+                         */
+                        $openfilterdlg = false;
+                        if($attrdefs) {
+                            foreach($attrdefs as $attrdef) {
+                                $attricon = '';
+                                if($attrdef->getObjType() == SeedDMS_Core_AttributeDefinition::objtype_document || $attrdef->getObjType() == SeedDMS_Core_AttributeDefinition::objtype_documentcontent) {
+                                    if(!empty($attributes[$attrdef->getID()]))
+                                        $openfilterdlg = true;
+                                }
+                            }
+                        }
+                        if($categories)
+                            $openfilterdlg = true;
+                        if($status)
+                            $openfilterdlg = true;
+                        if($expirationdate)
+                            $openfilterdlg = true;
+                ?>
+                <div class="accordion" id="accordion2">
+                  <div class="accordion-group">
+                    <div class="accordion-heading">
+                      <a class="accordion-toggle" data-toggle="collapse" data-parent="#accordion2" href="#collapseOne">
+                        <?php printMLText('filter_for_documents'); ?>
+                      </a>
+                    </div>
+                    <div id="collapseOne" class="accordion-body <?php if(!$openfilterdlg) echo "collapse";?>" style="_height: 0px;">
+                        <div class="accordion-inner">
+                            <table class="table-condensed">
+                            <tr>
+                                <td><?php printMLText("category");?>:</td>
+                                <td>
+                                <select class="chzn-select" name="categoryids[]" multiple="multiple" data-placeholder="<?php printMLText('select_category'); ?>" data-no_results_text="<?php printMLText('unknown_document_category'); ?>">
+                                <!--
+                                <option value="-1"><?php printMLText("all_categories");?>
+                                -->
+                                <?php
+                                        $tmpcatids = array();
+                                        foreach($categories as $tmpcat)
+                                            $tmpcatids[] = $tmpcat->getID();
+                                        foreach ($allCats as $catObj) {
+                                            print "<option value=\"".$catObj->getID()."\" ".(in_array($catObj->getID(), $tmpcatids) ? "selected" : "").">" . htmlspecialchars($catObj->getName()) . "\n";
+                                        }
+                                ?>
+                                </select>
+                                </td>
+                            </tr>
+                            <tr>
+                            <td><?php printMLText("status");?>:</td>
+                            <td>
+                            <?php if($workflowmode == 'traditional' || $workflowmode == 'traditional_only_approval') { ?>
+                            <?php if($workflowmode == 'traditional') { ?>
+                            <label class="checkbox" for='pendingReview'><input type="checkbox" id="pendingReview" name="pendingReview" value="1" <?php echo in_array(S_DRAFT_REV, $status) ? "checked" : ""; ?>><?php printOverallStatusText(S_DRAFT_REV);?></label>
+                            <?php } ?>
+                            <label class="checkbox" for='pendingApproval'><input type="checkbox" id="pendingApproval" name="pendingApproval" value="1" <?php echo in_array(S_DRAFT_APP, $status) ? "checked" : ""; ?>><?php printOverallStatusText(S_DRAFT_APP);?></label>
+                            <?php } else { ?>
+                            <label class="checkbox" for='inWorkflow'><input type="checkbox" id="inWorkflow" name="inWorkflow" value="1" <?php echo in_array(S_IN_WORKFLOW, $status) ? "checked" : ""; ?>><?php printOverallStatusText(S_IN_WORKFLOW);?></label>
+                            <?php } ?>
+                            <label class="checkbox" for='released'><input type="checkbox" id="released" name="released" value="1" <?php echo in_array(S_RELEASED, $status) ? "checked" : ""; ?>><?php printOverallStatusText(S_RELEASED);?></label>
+                            <label class="checkbox" for='rejected'><input type="checkbox" id="rejected" name="rejected" value="1" <?php echo in_array(S_REJECTED, $status) ? "checked" : ""; ?>><?php printOverallStatusText(S_REJECTED);?></label>
+                            <label class="checkbox" for='obsolete'><input type="checkbox" id="obsolete" name="obsolete" value="1" <?php echo in_array(S_OBSOLETE, $status) ? "checked" : ""; ?>><?php printOverallStatusText(S_OBSOLETE);?></label>
+                            <label class="checkbox" for='expired'><input type="checkbox" id="expired" name="expired" value="1" <?php echo in_array(S_EXPIRED, $status) ? "checked" : ""; ?>><?php printOverallStatusText(S_EXPIRED);?></label>
+                            </td>
+                            </tr>
+                            <tr>
+                            <td><?php printMLText("expires");?>:</td>
+                            <td>
+                                    <label class="checkbox inline">
+                                              <input type="checkbox" name="expirationdate" value="true" <?php if($expirationdate) echo "checked"; ?>/><?php printMLText("between");?>
+                                    </label><br />
+                                    <span class="input-append date" style="display: inline;" id="expirationstartdate" data-date="<?php echo date('Y-m-d'); ?>" data-date-format="yyyy-mm-dd" data-date-language="<?php echo str_replace('_', '-', $this->params['session']->getLanguage()); ?>">
+                                      <input class="span4" size="16" name="expirationstart" type="text" value="<?php if($expstartdate) printf("%04d-%02d-%02d", $expstartdate['year'], $expstartdate['month'], $expstartdate['day']); else echo date('Y-m-d'); ?>">
+                                      <span class="add-on"><i class="icon-calendar"></i></span>
+                                    </span>&nbsp;
+                                            <?php printMLText("and"); ?>
+                                    <span class="input-append date" style="display: inline;" id="expirationenddate" data-date="<?php echo date('Y-m-d'); ?>" data-date-format="yyyy-mm-dd" data-date-language="<?php echo str_replace('_', '-', $this->params['session']->getLanguage()); ?>">
+                                      <input class="span4" size="16" name="expirationend" type="text" value="<?php if($expstopdate) printf("%04d-%02d-%02d", $expstopdate['year'], $expstopdate['month'], $expstopdate['day']); else echo date('Y-m-d'); ?>">
+                                      <span class="add-on"><i class="icon-calendar"></i></span>
+                                    </span>
+                            </td>
+                            </tr>
+                            <?php
+                                    if($attrdefs) {
+                                        foreach($attrdefs as $attrdef) {
+                                            $attricon = '';
+                                            if($attrdef->getObjType() == SeedDMS_Core_AttributeDefinition::objtype_document || $attrdef->getObjType() == SeedDMS_Core_AttributeDefinition::objtype_documentcontent) {
+                            ?>
+                            <tr>
+                                <td><?php echo htmlspecialchars($attrdef->getName()); ?>:</td>
+                                <td><?php $this->printAttributeEditField($attrdef, isset($attributes[$attrdef->getID()]) ? $attributes[$attrdef->getID()] : '', 'attributes', true) ?></td>
+                            </tr>
 
-</table>
-<?php
-		$this->contentContainerEnd();
-// }}}
-
-		/* First check if any of the folder filters are set. If it is,
-		 * open the accordion.
-		 */
-		$openfilterdlg = false;
-		if($attrdefs) {
-			foreach($attrdefs as $attrdef) {
-				$attricon = '';
-				if($attrdef->getObjType() == SeedDMS_Core_AttributeDefinition::objtype_document || $attrdef->getObjType() == SeedDMS_Core_AttributeDefinition::objtype_documentcontent) {
-					if(!empty($attributes[$attrdef->getID()]))
-						$openfilterdlg = true;
-				}
-			}
-		}
-		if($categories)
-			$openfilterdlg = true;
-		if($status)
-			$openfilterdlg = true;
-		if($expirationdate)
-			$openfilterdlg = true;
-?>
-<div class="accordion" id="accordion2">
-  <div class="accordion-group">
-    <div class="accordion-heading">
-      <a class="accordion-toggle" data-toggle="collapse" data-parent="#accordion2" href="#collapseOne">
-        <?php printMLText('filter_for_documents'); ?>
-      </a>
-    </div>
-    <div id="collapseOne" class="accordion-body <?php if(!$openfilterdlg) echo "collapse";?>" style="_height: 0px;">
-      <div class="accordion-inner">
-<table class="table-condensed">
-<tr>
-<td><?php printMLText("category");?>:</td>
-<td>
-<select class="chzn-select" name="categoryids[]" multiple="multiple" data-placeholder="<?php printMLText('select_category'); ?>" data-no_results_text="<?php printMLText('unknown_document_category'); ?>">
-<!--
-<option value="-1"><?php printMLText("all_categories");?>
--->
-<?php
-		$tmpcatids = array();
-		foreach($categories as $tmpcat)
-			$tmpcatids[] = $tmpcat->getID();
-		foreach ($allCats as $catObj) {
-			print "<option value=\"".$catObj->getID()."\" ".(in_array($catObj->getID(), $tmpcatids) ? "selected" : "").">" . htmlspecialchars($catObj->getName()) . "\n";
-		}
-?>
-</select>
-</td>
-</tr>
-<tr>
-<td><?php printMLText("status");?>:</td>
-<td>
-<?php if($workflowmode == 'traditional' || $workflowmode == 'traditional_only_approval') { ?>
-<?php if($workflowmode == 'traditional') { ?>
-<label class="checkbox" for='pendingReview'><input type="checkbox" id="pendingReview" name="pendingReview" value="1" <?php echo in_array(S_DRAFT_REV, $status) ? "checked" : ""; ?>><?php printOverallStatusText(S_DRAFT_REV);?></label>
-<?php } ?>
-<label class="checkbox" for='pendingApproval'><input type="checkbox" id="pendingApproval" name="pendingApproval" value="1" <?php echo in_array(S_DRAFT_APP, $status) ? "checked" : ""; ?>><?php printOverallStatusText(S_DRAFT_APP);?></label>
-<?php } else { ?>
-<label class="checkbox" for='inWorkflow'><input type="checkbox" id="inWorkflow" name="inWorkflow" value="1" <?php echo in_array(S_IN_WORKFLOW, $status) ? "checked" : ""; ?>><?php printOverallStatusText(S_IN_WORKFLOW);?></label>
-<?php } ?>
-<label class="checkbox" for='released'><input type="checkbox" id="released" name="released" value="1" <?php echo in_array(S_RELEASED, $status) ? "checked" : ""; ?>><?php printOverallStatusText(S_RELEASED);?></label>
-<label class="checkbox" for='rejected'><input type="checkbox" id="rejected" name="rejected" value="1" <?php echo in_array(S_REJECTED, $status) ? "checked" : ""; ?>><?php printOverallStatusText(S_REJECTED);?></label>
-<label class="checkbox" for='obsolete'><input type="checkbox" id="obsolete" name="obsolete" value="1" <?php echo in_array(S_OBSOLETE, $status) ? "checked" : ""; ?>><?php printOverallStatusText(S_OBSOLETE);?></label>
-<label class="checkbox" for='expired'><input type="checkbox" id="expired" name="expired" value="1" <?php echo in_array(S_EXPIRED, $status) ? "checked" : ""; ?>><?php printOverallStatusText(S_EXPIRED);?></label>
-</td>
-</tr>
-<tr>
-<td><?php printMLText("expires");?>:</td>
-<td>
-        <label class="checkbox inline">
-				  <input type="checkbox" name="expirationdate" value="true" <?php if($expirationdate) echo "checked"; ?>/><?php printMLText("between");?>
-        </label><br />
-        <span class="input-append date" style="display: inline;" id="expirationstartdate" data-date="<?php echo date('Y-m-d'); ?>" data-date-format="yyyy-mm-dd" data-date-language="<?php echo str_replace('_', '-', $this->params['session']->getLanguage()); ?>">
-          <input class="span4" size="16" name="expirationstart" type="text" value="<?php if($expstartdate) printf("%04d-%02d-%02d", $expstartdate['year'], $expstartdate['month'], $expstartdate['day']); else echo date('Y-m-d'); ?>">
-          <span class="add-on"><i class="icon-calendar"></i></span>
-        </span>&nbsp;
-				<?php printMLText("and"); ?>
-        <span class="input-append date" style="display: inline;" id="expirationenddate" data-date="<?php echo date('Y-m-d'); ?>" data-date-format="yyyy-mm-dd" data-date-language="<?php echo str_replace('_', '-', $this->params['session']->getLanguage()); ?>">
-          <input class="span4" size="16" name="expirationend" type="text" value="<?php if($expstopdate) printf("%04d-%02d-%02d", $expstopdate['year'], $expstopdate['month'], $expstopdate['day']); else echo date('Y-m-d'); ?>">
-          <span class="add-on"><i class="icon-calendar"></i></span>
-        </span>
-</td>
-</tr>
-<?php
-		if($attrdefs) {
-			foreach($attrdefs as $attrdef) {
-				$attricon = '';
-				if($attrdef->getObjType() == SeedDMS_Core_AttributeDefinition::objtype_document || $attrdef->getObjType() == SeedDMS_Core_AttributeDefinition::objtype_documentcontent) {
-?>
-<tr>
-	<td><?php echo htmlspecialchars($attrdef->getName()); ?>:</td>
-	<td><?php $this->printAttributeEditField($attrdef, isset($attributes[$attrdef->getID()]) ? $attributes[$attrdef->getID()] : '', 'attributes', true) ?></td>
-</tr>
-
-<?php
-				}
-			}
-		}
-?>
-</table>
-      </div>
-    </div>
-  </div>
-</div>
-<?php
-		/* First check if any of the folder filters are set. If it is,
-		 * open the accordion.
-		 */
-		$openfilterdlg = false;
-		if($attrdefs) {
-			foreach($attrdefs as $attrdef) {
-				$attricon = '';
-				if($attrdef->getObjType() == SeedDMS_Core_AttributeDefinition::objtype_folder) {
-					if(!empty($attributes[$attrdef->getID()]))
-						$openfilterdlg = true;
-				}
-			}
-		}
-?>
-<div class="accordion" id="accordion3">
-  <div class="accordion-group">
-    <div class="accordion-heading">
-      <a class="accordion-toggle" data-toggle="collapse" data-parent="#accordion3" href="#collapseFolder">
-        <?php printMLText('filter_for_folders'); ?>
-      </a>
-    </div>
-    <div id="collapseFolder" class="accordion-body <?php if(!$openfilterdlg) echo "collapse";?>" style="_height: 0px;">
-      <div class="accordion-inner">
-<table class="table-condensed">
-<?php
-		if($attrdefs) {
-			foreach($attrdefs as $attrdef) {
-				$attricon = '';
-				if($attrdef->getObjType() == SeedDMS_Core_AttributeDefinition::objtype_folder) {
-?>
-<tr>
-	<td><?php echo htmlspecialchars($attrdef->getName()); ?>:</td>
-	<td><?php $this->printAttributeEditField($attrdef, isset($attributes[$attrdef->getID()]) ? $attributes[$attrdef->getID()] : '', 'attributes', true) ?></td>
-</tr>
-<?php
-				}
-			}
-		}
-?>
-</table>
-      </div>
-    </div>
-  </div>
-</div>
-</form>
-		</div>
+                            <?php
+                                            }
+                                        }
+                                    }
+                            ?>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <?php
+                    /* First check if any of the folder filters are set. If it is,
+                     * open the accordion.
+                     */
+                    $openfilterdlg = false;
+                    if($attrdefs) {
+                        foreach($attrdefs as $attrdef) {
+                            $attricon = '';
+                            if($attrdef->getObjType() == SeedDMS_Core_AttributeDefinition::objtype_folder) {
+                                if(!empty($attributes[$attrdef->getID()]))
+                                    $openfilterdlg = true;
+                            }
+                        }
+                    }
+            ?>
+                <div class="accordion" id="accordion3">
+                  <div class="accordion-group">
+                    <div class="accordion-heading">
+                      <a class="accordion-toggle" data-toggle="collapse" data-parent="#accordion3" href="#collapseFolder">
+                        <?php printMLText('filter_for_folders'); ?>
+                      </a>
+                    </div>
+                    <div id="collapseFolder" class="accordion-body <?php if(!$openfilterdlg) echo "collapse";?>" style="_height: 0px;">
+                      <div class="accordion-inner">
+                <table class="table-condensed">
+                <?php
+                        if($attrdefs) {
+                            foreach($attrdefs as $attrdef) {
+                                $attricon = '';
+                                if($attrdef->getObjType() == SeedDMS_Core_AttributeDefinition::objtype_folder) {
+                ?>
+                <tr>
+                    <td><?php echo htmlspecialchars($attrdef->getName()); ?>:</td>
+                    <td><?php $this->printAttributeEditField($attrdef, isset($attributes[$attrdef->getID()]) ? $attributes[$attrdef->getID()] : '', 'attributes', true) ?></td>
+                </tr>
+                <?php
+                                }
+                            }
+                        }
+                ?>
+                </table>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                </form>
+            </div>
+            
+            
 <?php
 		if($enablefullsearch) {
 	  	echo "<div class=\"tab-pane ".(($fullsearch == true) ? 'active' : '')."\" id=\"fulltext\">\n";
@@ -434,6 +438,30 @@ class SeedDMS_View_Search extends SeedDMS_Bootstrap_Style {
 			echo "</div>\n";
 		}
 ?>
+        
+        
+        <!-- 井搜索 -->
+        <div class="tab-pane" id="jing">
+            <div class="well">
+                <form action="javascript:;">
+                    <table class="table-condensed">
+                        <tr>
+                            <td>井号</td>
+                            <td><input type="text" id="jingvalue"></td>
+                        </tr>
+                        <tr>
+                            <td>&nbsp;</td>
+                            <td>
+                                <button type="button" class="btn">
+                                <i class="icon-search"></i>搜索
+                                </button>
+                            </td>
+                        </tr>
+                    </table>
+                </form>
+            </div>
+        </div>
+        
 	</div>
 <?php
 		echo "</div>\n";
