@@ -99,6 +99,7 @@ class SeedDMS_View_Search extends SeedDMS_Bootstrap_Style {
 		$timeout = $this->params['timeout'];
 
 		$this->htmlAddHeader('<script type="text/javascript" src="../styles/'.$this->theme.'/bootbox/bootbox.min.js"></script>'."\n", 'js');
+		$this->htmlAddHeader('<script type="text/javascript" src="../styles/searchjing.js"></script>'."\n", 'js');
 
 		$this->htmlStartPage(getMLText("search_results"));
 		$this->globalNavigation();
@@ -452,7 +453,7 @@ class SeedDMS_View_Search extends SeedDMS_Bootstrap_Style {
                         <tr>
                             <td>&nbsp;</td>
                             <td>
-                                <button type="button" class="btn">
+                                <button type="button" id="jingsearchbtn" class="btn">
                                 <i class="icon-search"></i>搜索
                                 </button>
                             </td>
@@ -465,7 +466,10 @@ class SeedDMS_View_Search extends SeedDMS_Bootstrap_Style {
 	</div>
 <?php
 		echo "</div>\n";
-		echo "<div class=\"span8\">\n";
+        
+        
+        // 搜索结果 ================
+		echo "<div class=\"span8\" id=\"searchContainer\">\n";
 // Search Result {{{
 		$foldercount = $doccount = 0;
 		if($entries) {
@@ -478,7 +482,8 @@ class SeedDMS_View_Search extends SeedDMS_Bootstrap_Style {
 				}
 			}
 			 */
-			print "<div class=\"alert\">".getMLText("search_report", array("doccount" => $totaldocs, "foldercount" => $totalfolders, 'searchtime'=>$searchTime))."</div>";
+             // 搜索结果头部
+			//print "<div class=\"alert\">".getMLText("search_report", array("doccount" => $totaldocs, "foldercount" => $totalfolders, 'searchtime'=>$searchTime))."</div>";
 			$this->pageList($pageNumber, $totalpages, "../out/out.Search.php", $urlparams);
 //			$this->contentContainerStart();
 
