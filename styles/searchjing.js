@@ -529,10 +529,17 @@ $(document).ready(function(){
         renderTable(mock);
         return;
         
+        var wellName = document.getElementById('jingvalue').value;
+        wellName = jQuery.trim(wellName);
+        
+        if(!wellName) {
+            return;
+        }
+        
         $.ajax({
                 url: 'http://192.168.212.60:81/DataService.asmx/QueryWellInfo',
                 type: "POST",
-                data: { wellName: '' },
+                data: { "wellName": wellName },
                 dataType: "json",
                 success: function (data) {
                     renderTable(data)
