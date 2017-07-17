@@ -526,13 +526,14 @@ $(document).ready(function(){
     var jingsearchbtn = document.getElementById('jingsearchbtn');
     
     jingsearchbtn.onclick = function(e) {
-        renderTable(mock);
-        return;
+        //renderTable(mock);
+        //return;
         
         var wellName = document.getElementById('jingvalue').value;
         wellName = jQuery.trim(wellName);
         
         if(!wellName) {
+            alert('请输入搜索关键字');
             return;
         }
         
