@@ -540,7 +540,7 @@ $(document).ready(function(){
         $.ajax({
                 url: 'http://192.168.212.60:81/DataService.asmx/QueryWellInfo',
                 type: "POST",
-                data: { "wellName": wellName },
+                data: { "para": wellName },
                 dataType: "json",
                 success: function (data) {
                     renderTable(data)
