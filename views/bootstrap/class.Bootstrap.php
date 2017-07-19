@@ -61,7 +61,7 @@ class SeedDMS_Bootstrap_Style extends SeedDMS_View_Common {
 			 */
 			$csp_rules = "script-src 'self' 'unsafe-eval';"; // style-src 'self';";
 			foreach (array("X-WebKit-CSP", "X-Content-Security-Policy", "Content-Security-Policy") as $csp) {
-				header($csp . ": " . $csp_rules);
+				//header($csp . ": " . $csp_rules);
 			}
 		}
 		echo "<!DOCTYPE html>\n";
@@ -112,7 +112,7 @@ background-image: linear-gradient(to bottom, #882222, #111111);;
         echo "<script>\n";
         echo "var DMS_CONFIG = {\n";
         echo '    "lang": "'. $this->params['session']->getLanguage() .'",' . "\n";
-        echo '    "jingLang": '. json_encode($jingLang) . "\n";
+        echo '    "jingLang": '. json_encode($jingLang) . ",\n";
         echo '    "jingLangKeys": '. json_encode(array_keys($jingLang)) . "\n";
         echo "};\n";
         echo "</script>\n";
