@@ -107,6 +107,15 @@ background-image: linear-gradient(to bottom, #882222, #111111);;
 		}
 		$sitename = trim(strip_tags($this->params['sitename']));
 		echo "<title>".(strlen($sitename)>0 ? $sitename : "SeedDMS").(strlen($title)>0 ? ": " : "").htmlspecialchars($title)."</title>\n";
+		
+        $jingLang = include '../languages/' . $this->params['session']->getLanguage() . '/jing.php';
+        echo "<script>\n";
+        echo "var DMS_CONFIG = {\n";
+        echo '    "lang": "'. $this->params['session']->getLanguage() .'",' . "\n";
+        echo '    "jingLang": '. json_encode($jingLang) . "\n";
+        echo '    "jingLangKeys": '. json_encode(array_keys($jingLang)) . "\n";
+        echo "};\n";
+        echo "</script>\n";
 		echo "</head>\n";
 		echo "<body".(strlen($bodyClass)>0 ? " class=\"".$bodyClass."\"" : "").">\n";
 		if($this->params['session'] && $flashmsg = $this->params['session']->getSplashMsg()) {

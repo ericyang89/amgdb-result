@@ -489,10 +489,23 @@ var mock = {
  
 
 function renderTable(data) {
+    var config = DMS_CONFIG.jingLang;
+    
     var html =
     '<table class="table table-hover">\
         <tr>\
-            <th>井号</th><th>车间</th><th>处理厂</th><th>区块</th><th>开发单元</th><th>层位</th><th>采油厂</th><th>目前井别</th><th>投产日期</th><th>计量间</th><th>油气田</th><th>查看详情</th>\
+            <th>'+ config.jinghao +'</th>\
+            <th>'+ config.chejian +'</th>\
+            <th>'+ config.chulichang +'</th>\
+            <th>'+ config.qukuai +'</th>\
+            <th>'+ config.kaifadanyuan +'</th>\
+            <th>'+ config.cengwei +'</th>\
+            <th>'+ config.caiyouchang +'</th>\
+            <th>'+ config.muqianjingbie +'</th>\
+            <th>'+ config.touchanriqi +'</th>\
+            <th>'+ config.jiliangjian +'</th>\
+            <th>'+ config.youqitian +'</th>\
+            <th>'+ config.chakan +'</th>\
         </tr>\
         {str}\
     </table>'

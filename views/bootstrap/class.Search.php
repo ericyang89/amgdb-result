@@ -447,7 +447,7 @@ class SeedDMS_View_Search extends SeedDMS_Bootstrap_Style {
                 <form action="javascript:;">
                     <table class="table-condensed">
                         <tr>
-                            <td>井号</td>
+                            <td><?php printMLText('jinghao'); ?></td>
                             <td><input type="text" id="jingvalue"></td>
                         </tr>
                         <tr>
