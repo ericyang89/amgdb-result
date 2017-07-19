@@ -513,7 +513,7 @@ function renderTable(data) {
             + '<td>'+ (data[i].TCRQ || '') +'</td>'
             + '<td>'+ (data[i].JLJ || '') +'</td>'
             + '<td>'+ (data[i].YQTDM || '') +'</td>'
-            + '<td><a target="_blank" href="http://192.168.212.60:81/DataDetailCN.htm?'+ data[i].JH +'"></td>'
+            + '<td><a target="_blank" href="http://192.168.212.60:81/DataDetailCN.htm?'+ data[i].JH +'">查看详情</a></td>'
             + '</tr>';
     }
     
