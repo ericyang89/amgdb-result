@@ -492,7 +492,7 @@ function renderTable(data) {
     var html =
     '<table class="table table-hover">\
         <tr>\
-            <th>井号</th><th>车间</th><th>处理厂</th><th>区块</th><th>开发单元</th><th>层位</th><th>采油厂</th><th>目前井别</th><th>投产日期</th><th>计量间</th><th>油气田</th>\
+            <th>井号</th><th>车间</th><th>处理厂</th><th>区块</th><th>开发单元</th><th>层位</th><th>采油厂</th><th>目前井别</th><th>投产日期</th><th>计量间</th><th>油气田</th><th>查看详情</th>\
         </tr>\
         {str}\
     </table>'
@@ -502,17 +502,18 @@ function renderTable(data) {
     var str = '';
     for(var i=0, len=data.length; i<len; i++) {
         str += '<tr>'
-            + '<td>'+ data[i].JH +'</td>'
-            + '<td>'+ data[i].CJDM +'</td>'
-            + '<td>'+ data[i].CLCDM +'</td>'
-            + '<td>'+ data[i].QKDM +'</td>'
-            + '<td>'+ data[i].KFDYDM +'</td>'
-            + '<td>'+ data[i].CWDM +'</td>'
-            + '<td>'+ data[i].CYCDM +'</td>'
-            + '<td>'+ data[i].MQJB +'</td>'
-            + '<td>'+ data[i].TCRQ +'</td>'
-            + '<td>'+ data[i].JLJ +'</td>'
-            + '<td>'+ data[i].YQTDM +'</td>'
+            + '<td>'+ (data[i].JH || '') +'</td>'
+            + '<td>'+ (data[i].CJDM  || '') +'</td>'
+            + '<td>'+ (data[i].CLCDM || '') +'</td>'
+            + '<td>'+ (data[i].QKDM || '') +'</td>'
+            + '<td>'+ (data[i].KFDYDM || '') +'</td>'
+            + '<td>'+ (data[i].CWDM || '') +'</td>'
+            + '<td>'+ (data[i].CYCDM || '') +'</td>'
+            + '<td>'+ (data[i].MQJB || '') +'</td>'
+            + '<td>'+ (data[i].TCRQ || '') +'</td>'
+            + '<td>'+ (data[i].JLJ || '') +'</td>'
+            + '<td>'+ (data[i].YQTDM || '') +'</td>'
+            + '<td><a target="_blank" href="http://192.168.212.60:81/DataDetailCN.htm?'+ data[i].JH +'"></td>'
             + '</tr>';
     }
     
