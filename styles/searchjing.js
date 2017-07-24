@@ -552,7 +552,9 @@ $(document).ready(function(){
         }
         
         $.ajax({
-                url: 'http://192.168.212.60:81/DataService.asmx/QueryWellInfo',
+                url: DMS_CONFIG.lang === 'zh_CN'
+                    ? 'http://192.168.212.60:81/DataService.asmx/QueryWellInfo'
+                    : 'http://192.168.212.60:81/DataService.asmx/QueryWellInfoRU',
                 type: "POST",
                 data: { "para": wellName },
                 dataType: "json",

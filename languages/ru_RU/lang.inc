@@ -1622,7 +1622,7 @@ URL: [url]',
 'zh_TW' => 'Chinese (TW)',
 'using_folder' => '应用的文件夹',
 'foldernotselect' => '没有选择文件夹',
-'jingsearch' => '井搜索',
-'jinghao' => '井号'
+'jingsearch' => 'нефтяных скважин',
+'jinghao' => '№'
 );
 ?>
