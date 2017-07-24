@@ -454,7 +454,7 @@ class SeedDMS_View_Search extends SeedDMS_Bootstrap_Style {
                             <td>&nbsp;</td>
                             <td>
                                 <button type="button" id="jingsearchbtn" class="btn">
-                                <i class="icon-search"></i>搜索
+                                <i class="icon-search"></i><?php printMLText('jingsearch'); ?>
                                 </button>
                             </td>
                         </tr>
