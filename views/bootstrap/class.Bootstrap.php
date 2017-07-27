@@ -109,12 +109,12 @@ background-image: linear-gradient(to bottom, #882222, #111111);;
 		echo "<title>".(strlen($sitename)>0 ? $sitename : "SeedDMS").(strlen($title)>0 ? ": " : "").htmlspecialchars($title)."</title>\n";
 		
         $jingLang = include __DIR__ . '/../../languages/' . $this->params['session']->getLanguage() . '/jing.php';
-        $dftLang = 'zh_CN';
+        $dftLang = isset($this->params['session'])
+            ? $this->params['session']->getLanguage()
+            : 'zh_CN';
         echo "<script>\n";
         echo "var DMS_CONFIG = {\n";
-        echo '    "lang": "'.  isset($this->params['session'])
-                                ? $this->params['session']->getLanguage()
-                                : $dftLang .'",' . "\n";
+        echo '    "lang": "'. $dftLang .'"' . ",\n";
         echo '    "jingLang": '. json_encode($jingLang) . ",\n";
         echo '    "jingLangKeys": '. json_encode(array_keys($jingLang)) . "\n";
         echo "};\n";
