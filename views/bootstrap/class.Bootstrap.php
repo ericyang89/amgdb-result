@@ -108,7 +108,11 @@ background-image: linear-gradient(to bottom, #882222, #111111);;
 		$sitename = trim(strip_tags($this->params['sitename']));
 		echo "<title>".(strlen($sitename)>0 ? $sitename : "SeedDMS").(strlen($title)>0 ? ": " : "").htmlspecialchars($title)."</title>\n";
 		
-        $jingLang = include __DIR__ . '/../../languages/' . $this->params['session']->getLanguage() . '/jing.php';
+        
+        $jingLang = isset($this->params['session'])
+            ?  include __DIR__ . '/../../languages/' . $this->params['session']->getLanguage() . '/jing.php'
+            : array();
+        
         $dftLang = isset($this->params['session'])
             ? $this->params['session']->getLanguage()
             : 'zh_CN';
