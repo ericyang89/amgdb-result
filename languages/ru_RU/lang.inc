@@ -1623,6 +1623,6 @@ URL: [url]',
 'using_folder' => '应用的文件夹',
 'foldernotselect' => '没有选择文件夹',
 'jingsearch' => 'нефтяных скважин',
-'jinghao' => '№'
+'jinghao' => '№ скв.'
 );
 ?>
